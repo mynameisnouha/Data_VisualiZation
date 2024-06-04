@@ -202,38 +202,44 @@ function CreateDataTable(_data) {
 }
 let selectedPoints = new Map(); // Set to keep track of selected points
 function renderLegend() {
-    // Remove existing legend
     d3.select("#legend").selectAll("*").remove();
 
-   // Append legend items for selected points
-   selectedPoints.forEach((color, point) => {
-    console.log("Point value:", point);
-    let legendItem = d3.select("#legend").append("div")
-        .style("display", "flex")
-        .style("align-items", "center");
+    selectedPoints.forEach((color, point) => {
+        let legendItem = d3.select("#legend").append("div")
+            .style("display", "flex")
+            .style("align-items", "center");
 
-    legendItem.append("div")
-        .style("width", "10px")
-        .style("height", "10px")
-        .style("background-color", color)
-        .style("margin-right", "5px");
+        legendItem.append("div")
+            .attr("class", "color-circle")
+            .style("background-color", color);
 
-    legendItem.append("span")
-        .text(point.Name); // Display the point value in the legend
-});
+        legendItem.append("span")
+            .text(point.Name);
+
+        legendItem.append("span")
+            .attr("class", "close")
+            .text("x")
+            .on("click", () => {
+                selectedPoints.delete(point);
+                renderLegend();
+                renderScatterplot(); // Only update the scatterplot
+                renderRadarChart(); // Only update the radar chart
+            });
+    });
+    
 }
+
+
 function handlePointClick(d, element) {
-    // Toggle selection of the clicked point
     if (selectedPoints.has(d)) {
         selectedPoints.delete(d);
-        element.style("fill", "Black"); // Deselect point
+        element.style("fill", "black");
     } else {
-        // Assign a color to the selected point
         let color = d3.schemeCategory10[selectedPoints.size % 10];
         selectedPoints.set(d, color);
-        element.style("fill", color); // Select point with assigned color
+        element.style("fill", color);
     }
-    renderLegend(); // Update legend
+    renderLegend();
 }
 
 function renderScatterplot(){
@@ -269,7 +275,7 @@ function renderScatterplot(){
         .attr("cy", d => y(d[yAttribute]))
         .attr("r", d => sizeScale(d[sizeAttribute])) // Use size scale for the radius
         .attr("opacity", 0.6)
-        .style("fill", "Black")
+        .style("fill", d => selectedPoints.has(d) ? selectedPoints.get(d) : "black")  // Update the fill color based on selection
         .on("click", function(event, d) {
             handlePointClick(d, d3.select(this));
         });
@@ -345,6 +351,10 @@ function renderRadarChart(){
 
     radarArea.exit().remove();
 }
+
+
+
+
 
 function radarX(radius, index){
     return radius * Math.cos(radarAngle(index));
