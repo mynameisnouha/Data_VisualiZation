@@ -1,22 +1,19 @@
-// scatterplot axes
 let xAxis, yAxis, xAxisLabel, yAxisLabel, data, x, y;
-let channels = ["scatterX", "scatterY","size"]; // Define channels here
-// TO do
-// *fix the lengends column that corresponds to the chosen axis: in cars we have: point.Name  
-// *fix the intialisation: after changing the dataset all the data vis should be reset
-// * add a filter of number of rows, visible number of rows
+let channels = ["scatterX", "scatterY", "size"]; // Define channels here
+let selectedPoints = new Map(); // Map to keep track of selected points
+
 function init() {
     // define size of plots
-    margin = {top: 20, right: 20, bottom: 20, left: 50};
+    margin = {top: 10, right: 10, bottom: 10, left: 50};
     width = 600;
-    height = 500;
+    height = 600;
     radius = width / 2;
 
     // Start at default tab
     document.getElementById("defaultOpen").click();
 
-	// data table
-	dataTable = d3.select('#dataTable');
+    // data table
+    dataTable = d3.select('#dataTable');
  
     // scatterplot SVG container and axes
     scatter = d3.select("#sp").append("svg")
@@ -33,23 +30,13 @@ function init() {
 
     // read and parse input file
     let fileInput = document.getElementById("upload"), readFile = function () {
-
-        // clear existing visualizations
         clear();
-
         let reader = new FileReader();
         reader.onloadend = function () {
-            // Parse CSV data using d3-dsv
             let csvData = reader.result;
             let parsedData = d3.csvParse(csvData, d3.autoType);
-
-            // Extract numerical attributes and store them in the dimensions array
             dimensions = Object.keys(parsedData[0]).filter(key => !isNaN(parsedData[0][key]));
-
-            // Log the dimensions array to verify
             console.log("Numerical attributes:", dimensions);
-           
-            // Call the initVis function with the parsed data
             initVis(parsedData);
             CreateDataTable(parsedData);
             initDashboard(null); // Adjust this call as necessary
@@ -57,26 +44,13 @@ function init() {
         reader.readAsBinaryString(fileInput.files[0]);
     };
     fileInput.addEventListener('change', readFile);
-    
 }
 
-function initVis(_data){
-    // Assign data to the global variable
+function initVis(_data) {
     data = _data;
+    y = d3.scaleLinear().range([height - margin.bottom - margin.top, margin.top]);
+    x = d3.scaleLinear().range([margin.left, width - margin.left - margin.right]);
 
-    // y scalings for scatterplot
-    y = d3.scaleLinear()
-        .range([height - margin.bottom - margin.top, margin.top]);
-
-    // x scalings for scatter plot
-    x = d3.scaleLinear()
-        .range([margin.left, width - margin.left - margin.right]);
-   
-    // radius scalings for radar chart
-    let r = d3.scaleLinear()
-        .range([0, radius]);
-
-    // scatterplot axes
     yAxis = scatter.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(" + margin.left + ")")
@@ -97,53 +71,24 @@ function initVis(_data){
         .attr("x", width - margin.right)
         .text("y");
 
-    // radar chart axes
     radarAxesAngle = Math.PI * 2 / dimensions.length;
-    let axisRadius = d3.scaleLinear()
-        .range([0, radius]);
+    let axisRadius = d3.scaleLinear().range([0, radius]);
     let maxAxisRadius = 0.75,
         textRadius = 0.8;
     gridRadius = 0.1;
-
-    // radar axes
-    radarAxes = radar.selectAll(".axis")
-        .data(dimensions)
-        .enter()
-        .append("g")
-        .attr("class", "axis");
-
-    radarAxes.append("line")
-        .attr("x1", 0)
-        .attr("y1", 0)
-        .attr("x2", function(d, i){ return radarX(axisRadius(maxAxisRadius), i); })
-        .attr("y2", function(d, i){ return radarY(axisRadius(maxAxisRadius), i); })
-        .attr("class", "line")
-        .style("stroke", "black");
-
-    // Render grid lines and labels
-    radar.selectAll(".axisLabel")
-        .data(dimensions)
-        .enter()
-        .append("text")
-        .attr("text-anchor", "middle")
-        .attr("dy", "0.35em")
-        .attr("x", function(d, i){ return radarX(axisRadius(textRadius), i); })
-        .attr("y", function(d, i){ return radarY(axisRadius(textRadius), i); })
-        .text(d => d);
 
     // Initialize menu for the visual channels
     channels.forEach(function(c){
         initMenu(c, dimensions);
     });
 
-    // Refresh all select menus
     channels.forEach(function(c){
         refreshMenu(c);
     });
 
-    // Render the scatterplot and radar chart
     renderScatterplot();
-    renderRadarChart();
+    renderRadarGrid();
+    renderRadarAxes();
 }
 
 // clear visualizations before loading a new file
@@ -200,7 +145,7 @@ function CreateDataTable(_data) {
         }
     });
 }
-let selectedPoints = new Map(); // Set to keep track of selected points
+
 function renderLegend() {
     d3.select("#legend").selectAll("*").remove();
 
@@ -222,13 +167,11 @@ function renderLegend() {
             .on("click", () => {
                 selectedPoints.delete(point);
                 renderLegend();
-                renderScatterplot(); // Only update the scatterplot
-                renderRadarChart(); // Only update the radar chart
+                renderScatterplot();
+                renderRadarChart();
             });
     });
-    
 }
-
 
 function handlePointClick(d, element) {
     if (selectedPoints.has(d)) {
@@ -240,31 +183,27 @@ function handlePointClick(d, element) {
         element.style("fill", color);
     }
     renderLegend();
+    renderRadarChart(); // Update radar chart when a point is clicked
 }
 
 function renderScatterplot(){
     let xAttribute = readMenu("scatterX");
     let yAttribute = readMenu("scatterY");
-    let sizeAttribute = readMenu("size"); // Renamed variable for clarity
+    let sizeAttribute = readMenu("size");
 
-    // Update x and y domains based on selected attributes
     x.domain(d3.extent(data, d => d[xAttribute])).nice();
     y.domain(d3.extent(data, d => d[yAttribute])).nice();
 
-    // Update the axes with new domains
     xAxis.transition().call(d3.axisBottom(x));
     yAxis.transition().call(d3.axisLeft(y));
 
-    // Scale for the size of the dots based on the selected size attribute
     let sizeScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d[sizeAttribute])) // Ensure size scale is based on size attribute
-        .range([3, 10]); // Adjust the range as needed
+        .domain(d3.extent(data, d => d[sizeAttribute]))
+        .range([3, 10]);
 
-    // Update axis labels
     xAxisLabel.text(xAttribute);
     yAxisLabel.text(yAttribute);
 
-    // Bind data to the scatterplot dots and update their attributes
     let dots = scatter.selectAll(".dot")
         .data(data);
 
@@ -273,9 +212,9 @@ function renderScatterplot(){
         .merge(dots)
         .attr("cx", d => x(d[xAttribute]))
         .attr("cy", d => y(d[yAttribute]))
-        .attr("r", d => sizeScale(d[sizeAttribute])) // Use size scale for the radius
+        .attr("r", d => sizeScale(d[sizeAttribute]))
         .attr("opacity", 0.6)
-        .style("fill", d => selectedPoints.has(d) ? selectedPoints.get(d) : "black")  // Update the fill color based on selection
+        .style("fill", d => selectedPoints.has(d) ? selectedPoints.get(d) : "black")
         .on("click", function(event, d) {
             handlePointClick(d, d3.select(this));
         });
@@ -283,15 +222,9 @@ function renderScatterplot(){
     dots.exit().remove();
 }
 
+function renderRadarGrid() {
+    let levels = 5; // Number of concentric circles
 
-function renderRadarChart(){
-    radarAxesAngle = Math.PI * 2 / dimensions.length;
-    
-    let rScale = d3.scaleLinear()
-        .range([0, radius])
-        .domain([0, d3.max(data, d => d3.max(dimensions, attr => d[attr]))]);
-
-    let levels = 5;
     let gridlines = radar.selectAll(".grid")
         .data(d3.range(1, levels + 1).reverse());
 
@@ -304,6 +237,10 @@ function renderRadarChart(){
         .style("fill", "none");
 
     gridlines.exit().remove();
+}
+
+function renderRadarAxes() {
+    radarAxesAngle = Math.PI * 2 / dimensions.length;
 
     let axis = radar.selectAll(".axis")
         .data(dimensions);
@@ -315,46 +252,62 @@ function renderRadarChart(){
         .merge(axis.select("line"))
         .attr("x1", 0)
         .attr("y1", 0)
-        .attr("x2", (d, i) => radarX(rScale(1), i))
-        .attr("y2", (d, i) => radarY(rScale(1), i))
+        .attr("x2", (d, i) => radarX(radius, i))
+        .attr("y2", (d, i) => radarY(radius, i))
         .style("stroke", "black");
 
     axisEnter.append("text")
         .merge(axis.select("text"))
-        .attr("x", (d, i) => radarX(rScale(1.1), i))
-        .attr("y", (d, i) => radarY(rScale(1.1), i))
+        .attr("x", (d, i) => radarX(radius * 1.1, i))
+        .attr("y", (d, i) => radarY(radius * 1.1, i))
         .style("text-anchor", "middle")
         .text(d => d);
 
     axis.exit().remove();
-
-    let radarLine = d3.lineRadial()
-        .radius(d => rScale(d.value))
-        .angle((d, i) => i * radarAxesAngle)
-        .curve(d3.curveLinearClosed);
-
-    let radarData = data.map(d => dimensions.map(attr => ({ value: d[attr], axis: attr })));
-
-    let radarArea = radar.selectAll(".radarArea")
-        .data(radarData);
-
-    radarArea.enter()
-        .append("path")
-        .attr("class", "radarArea")
-        .merge(radarArea)
-        .attr("d", radarLine)
-        .style("fill-opacity", 0.3)
-        .style("stroke-width", 1.5)
-        .style("stroke", "black")
-        .style("fill", (d, i) => d3.schemeCategory10[i % 10]);
-    renderLegend();
-
-    radarArea.exit().remove();
 }
 
+function renderRadarChart() {
+    // Remove existing radar lines before drawing new ones
+    radar.selectAll(".radarLine").remove();
+    radar.selectAll(".radarPoint").remove(); // Remove existing radar points before drawing new ones
 
+    selectedPoints.forEach((color, point) => {
+        let pointData = dimensions.map(attr => {
+            let value = point[attr];
+            let extent = d3.extent(data, d => d[attr]);
+            let normalizedValue = (value - extent[0]) / (extent[1] - extent[0]);
+            return { value: normalizedValue, axis: attr };
+        });
 
+        // Close the shape by adding the first point at the end
+        pointData.push(pointData[0]);
 
+        let radarLine = d3.lineRadial()
+            .radius(d => radius * d.value) // Adjust scaling as necessary
+            .angle((d, i) => i * radarAxesAngle);
+
+        radar.append("path")
+            .datum(pointData)
+            .attr("class", "radarLine")
+            .attr("d", radarLine)
+            .style("stroke", color)
+            .style("fill", "none")
+            .style("stroke-width", 2);
+
+        // Add dots for each point on the radar line
+        pointData.forEach((d, i) => {
+            if (i < pointData.length - 1) { // Avoid duplicating the first point added at the end
+                radar.append("circle")
+                    .attr("class", "radarPoint")
+                    .attr("cx", radarX(radius * d.value, i))
+                    .attr("cy", radarY(radius * d.value, i))
+                    .attr("r", 4) // Radius of the points
+                    .style("fill", color)
+                    .style("stroke", "none");
+            }
+        });
+    });
+}
 
 function radarX(radius, index){
     return radius * Math.cos(radarAngle(index));
@@ -398,7 +351,7 @@ function readMenu(id){
 }
 
 // switches and displays the tabs
-function openPage(pageName,elmnt,color) {
+function openPage(pageName, elmnt, color) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -411,3 +364,5 @@ function openPage(pageName,elmnt,color) {
     document.getElementById(pageName).style.display = "block";
     elmnt.style.backgroundColor = color;
 }
+
+init(); // Initialize the visualization
