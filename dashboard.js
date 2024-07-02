@@ -318,8 +318,8 @@ svg.selectAll("rect")
 
 function createChart2(svg, parsedData) {
 
-   document.addEventListener('DOMContentLoaded', function() {
-    const margin = { top: 20, right: 120, bottom: 50, left: 50 };
+   // document.addEventListener('DOMContentLoaded', function() {
+    const margin = { top: 20, right: 50, bottom: 50, left: 50 };
     const width = 960 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
 
@@ -341,7 +341,25 @@ function createChart2(svg, parsedData) {
             const csvData = reader.result;
             const data = d3.csvParse(csvData, d3.autoType);
 
-            const dataMelted = data.flatMap(d => months.map(month => ({
+            // Calculate total consumption for each user
+            const totalConsumption = data.map(d => ({
+                LCLid: d.LCLid,
+                total: months.reduce((sum, month) => sum + (+d[`Mean_KWH_${month}`] || 0), 0)
+            }));
+
+            // Sort users by total consumption
+            totalConsumption.sort((a, b) => b.total - a.total);
+
+            // Select top 2 and least 2 consumers
+            const selectedUsers = [
+                ...totalConsumption.slice(0, 2),
+                ...totalConsumption.slice(-2)
+            ].map(d => d.LCLid);
+
+            // Filter data for selected users
+            const filteredData = data.filter(d => selectedUsers.includes(d.LCLid));
+
+            const dataMelted = filteredData.flatMap(d => months.map(month => ({
                 LCLid: d.LCLid,
                 Month: month,
                 Mean_KWH: +d[`Mean_KWH_${month}`]  // Convert to number
