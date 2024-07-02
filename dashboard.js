@@ -434,7 +434,7 @@ function createChart3(){
 
 }
 
-function createChart4(svg, parsedData) {
+/* function createChart4(svg, parsedData) {
 
     document.addEventListener('DOMContentLoaded', function() {
         const margin = { top: 20, right: 50, bottom: 50, left: 50 };
@@ -539,7 +539,7 @@ function createChart4(svg, parsedData) {
         });
     });
     
-}
+}*/
 /*Reading and Parsing CSV: The file input element uses the FileReader API to read the CSV file. The d3.csvParse function converts the CSV data into a format suitable for D3.js processing.
 Data Transformation: The data is transformed to a long format where each row contains a user ID, month, and mean KWH.
 Scales and Axes: The x-axis is a band scale for the months, and the y-axis is a linear scale for the mean KWH values. Axes are created and appended to the SVG.
