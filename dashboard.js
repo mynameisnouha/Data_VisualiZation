@@ -316,17 +316,236 @@ svg.selectAll("rect")
 
 }*/
 
-function createChart2(){
+function createChart2(svg, parsedData) {
+
+   document.addEventListener('DOMContentLoaded', function() {
+    const margin = { top: 20, right: 120, bottom: 50, left: 50 };
+    const width = 960 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
+
+    const svg = d3.select("#chart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const fileInput = document.getElementById("upload");
+
+    fileInput.addEventListener('change', function() {
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            const csvData = reader.result;
+            const data = d3.csvParse(csvData, d3.autoType);
+
+            const dataMelted = data.flatMap(d => months.map(month => ({
+                LCLid: d.LCLid,
+                Month: month,
+                Mean_KWH: +d[`Mean_KWH_${month}`]  // Convert to number
+            })));
+
+            const x = d3.scaleBand()
+                .domain(months)
+                .range([0, width])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(dataMelted, d => d.Mean_KWH)])
+                .nice()
+                .range([height, 0]);
+
+            const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+            const line = d3.line()
+                .x(d => x(d.Month))
+                .y(d => y(d.Mean_KWH));
+
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("class", "axis-label")
+                .attr("transform", "rotate(-45)")
+                .style("text-anchor", "end");
+
+            svg.append("g")
+                .call(d3.axisLeft(y))
+                .selectAll("text")
+                .attr("class", "axis-label");
+
+            const userData = d3.groups(dataMelted, d => d.LCLid);
+
+            userData.forEach(([user_id, values]) => {
+                svg.append("path")
+                    .datum(values)
+                    .attr("fill", "none")
+                    .attr("stroke", color(user_id))
+                    .attr("stroke-width", 1.5)
+                    .attr("d", line)
+                    .attr("class", "line");
+
+                svg.selectAll(`.dot-${user_id}`)
+                    .data(values)
+                    .enter()
+                    .append("circle")
+                    .attr("class", `dot-${user_id}`)
+                    .attr("cx", d => x(d.Month))
+                    .attr("cy", d => y(d.Mean_KWH))
+                    .attr("r", 3)
+                    .attr("fill", color(user_id));
+            });
+
+            const legend = svg.append("g")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 10)
+                .attr("text-anchor", "end")
+                .selectAll("g")
+                .data(userData)
+                .enter().append("g")
+                .attr("transform", (d, i) => `translate(0,${i * 20})`);
+
+            legend.append("rect")
+                .attr("x", width + 20)
+                .attr("width", 19)
+                .attr("height", 19)
+                .attr("fill", d => color(d[0]));
+
+            legend.append("text")
+                .attr("x", width + 15)
+                .attr("y", 9.5)
+                .attr("dy", "0.32em")
+                .text(d => d[0])
+                .attr("class", "legend");
+        };
+
+        reader.readAsBinaryString(fileInput.files[0]);
+    });
+});
 
 }
+/* The FileReader API reads the selected CSV file and triggers the onloadend event.
+The d3.csvParse function parses the CSV data, converting it into a format suitable for D3.js processing.
+*/
 
 function createChart3(){
 
 }
 
-function createChart4(){
+function createChart4(svg, parsedData) {
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const margin = { top: 20, right: 50, bottom: 50, left: 50 };
+        const width = 960 - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
+    
+        const svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+        const fileInput = document.getElementById("upload");
+    
+        fileInput.addEventListener('change', function() {
+            const reader = new FileReader();
+    
+            reader.onloadend = function() {
+                const csvData = reader.result;
+                const data = d3.csvParse(csvData, d3.autoType);
+    
+                const dataMelted = data.flatMap(d => months.map(month => ({
+                    LCLid: d.LCLid,
+                    Month: month,
+                    Mean_KWH: +d[`Mean_KWH_${month}`]  // Convert to number
+                })));
+    
+                const x = d3.scaleBand()
+                    .domain(months)
+                    .range([0, width])
+                    .padding(0.1);
+    
+                const y = d3.scaleLinear()
+                    .domain([0, d3.max(dataMelted, d => d.Mean_KWH)])
+                    .nice()
+                    .range([height, 0]);
+    
+                svg.append("g")
+                    .attr("transform", `translate(0,${height})`)
+                    .call(d3.axisBottom(x))
+                    .selectAll("text")
+                    .attr("class", "axis-label")
+                    .attr("transform", "rotate(-45)")
+                    .style("text-anchor", "end");
+    
+                svg.append("g")
+                    .call(d3.axisLeft(y))
+                    .selectAll("text")
+                    .attr("class", "axis-label");
+    
+                const monthData = d3.groups(dataMelted, d => d.Month);
+    
+                monthData.forEach(([month, values]) => {
+                    const q1 = d3.quantile(values.map(d => d.Mean_KWH).sort(d3.ascending), 0.25);
+                    const median = d3.quantile(values.map(d => d.Mean_KWH).sort(d3.ascending), 0.5);
+                    const q3 = d3.quantile(values.map(d => d.Mean_KWH).sort(d3.ascending), 0.75);
+                    const interQuantileRange = q3 - q1;
+                    const min = d3.min(values, d => d.Mean_KWH);
+                    const max = d3.max(values, d => d.Mean_KWH);
+                    const lowerWhisker = Math.max(min, q1 - 1.5 * interQuantileRange);
+                    const upperWhisker = Math.min(max, q3 + 1.5 * interQuantileRange);
+    
+                    const outliers = values.filter(d => d.Mean_KWH < lowerWhisker || d.Mean_KWH > upperWhisker);
+    
+                    svg.append("line")
+                        .attr("x1", x(month) + x.bandwidth() / 2)
+                        .attr("x2", x(month) + x.bandwidth() / 2)
+                        .attr("y1", y(lowerWhisker))
+                        .attr("y2", y(upperWhisker))
+                        .attr("stroke", "black");
+    
+                    svg.append("rect")
+                        .attr("class", "box")
+                        .attr("x", x(month))
+                        .attr("y", y(q3))
+                        .attr("width", x.bandwidth())
+                        .attr("height", y(q1) - y(q3));
+    
+                    svg.append("line")
+                        .attr("class", "median")
+                        .attr("x1", x(month))
+                        .attr("x2", x(month) + x.bandwidth())
+                        .attr("y1", y(median))
+                        .attr("y2", y(median));
+    
+                    svg.selectAll(`.outlier-${month}`)
+                        .data(outliers)
+                        .enter()
+                        .append("circle")
+                        .attr("class", `outlier-${month}`)
+                        .attr("cx", x(month) + x.bandwidth() / 2)
+                        .attr("cy", d => y(d.Mean_KWH))
+                        .attr("r", 3)
+                        .attr("fill", "black");
+                });
+            };
+    
+            reader.readAsBinaryString(fileInput.files[0]);
+        });
+    });
+    
 }
+/*Reading and Parsing CSV: The file input element uses the FileReader API to read the CSV file. The d3.csvParse function converts the CSV data into a format suitable for D3.js processing.
+Data Transformation: The data is transformed to a long format where each row contains a user ID, month, and mean KWH.
+Scales and Axes: The x-axis is a band scale for the months, and the y-axis is a linear scale for the mean KWH values. Axes are created and appended to the SVG.
+Boxplot Calculation: For each month, the quantiles (Q1, median, Q3), interquartile range, and whiskers are calculated. Outliers are identified based on the whiskers.
+Boxplot Drawing: Rectangles for the boxes, lines for the medians and whiskers, and circles for outliers are drawn on the SVG
+*/
 
 // clear files if changes (dataset) occur
 function clearDashboard() {
