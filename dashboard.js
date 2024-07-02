@@ -18,7 +18,7 @@ let chart1, chart2, chart3, chart4;
 function initDashboard(_data) {
 
     // TODO: Initialize the environment (SVG, etc.) and call the nedded methods
-
+    console.log('we are readable here :)', parsedData)
     //  SVG container
     chart1 = d3.select("#chart1").append("svg")
         .attr("width", width)
@@ -46,13 +46,31 @@ function initDashboard(_data) {
         .append("g");
 
 
-    createChart1();
+    createChart1(chart1,parsedData);
     createChart2();
     createChart3();
     createChart4();
 }
 
-function createChart1(){
+function createChart1(svg, parsedData){
+    const xScale = d3.scaleLinear()
+    .domain([0, d3.max(parsedData, d => d.x)])
+    .range([0, width]);
+
+    const yScale = d3.scaleLinear()
+    .domain([0, d3.max(parsedData, d => d.y)])
+    .range([height, 0]);
+
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
+
+svg.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(xAxis);
+
+svg.append("g")
+    .call(yAxis);
+
 
 }
 

@@ -1,7 +1,7 @@
 let xAxis, yAxis, xAxisLabel, yAxisLabel, data, x, y;
 let channels = ["scatterX", "scatterY", "size"]; // Define channels here
 let selectedPoints = new Map(); // Map to keep track of selected points
-
+let parsedData
 function init() {
     // define size of plots
     margin = {top: 10, right: 10, bottom: 10, left: 50};
@@ -34,7 +34,7 @@ function init() {
         let reader = new FileReader();
         reader.onloadend = function () {
             let csvData = reader.result;
-            let parsedData = d3.csvParse(csvData, d3.autoType);
+            parsedData = d3.csvParse(csvData, d3.autoType);
             dimensions = Object.keys(parsedData[0]).filter(key => !isNaN(parsedData[0][key]));
             console.log("Numerical attributes:", dimensions);
             initVis(parsedData);
@@ -159,7 +159,7 @@ function renderLegend() {
             .style("background-color", color);
 
         legendItem.append("span")
-            .text(point.Name);
+            .text(point.LCLid);
 
         legendItem.append("span")
             .attr("class", "close")
