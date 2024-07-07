@@ -12,6 +12,9 @@
 2 visualisation, mockup, drawn (implemented) 4 visualisation at least(bar chart/ click on it/ line plot /)
 3 plan b if not (additional information)
 add interaction between charts
+
+--------------------------------------------------------------------------
+the link for the dataset:  https://drive.google.com/drive/folders/1QDaXRFrwgsYNZjc0NAuuSvlne-aWywfK?usp=sharing
 -->
 
 
@@ -30,14 +33,17 @@ add interaction between charts
     <!-- include jQueryUI -->
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-
+    <!--<script src="
+    https://cdn.jsdelivr.net/npm/ml-pca@4.1.1/lib/pca.min.js
+    "></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <!-- PART 1: include dataVis script -->
     <script src="dataVis.js"></script>
     <script type="text/javascript" src="https://livejs.com/live.js"></script>
 
     <!-- PART 2: include scripts for the dashboard -->
     <script src="dashboard.js"></script>
-
+    
 </head>
 
 <!-- call init function when page has loaded -->
@@ -60,11 +66,20 @@ add interaction between charts
 <!-- Tab 1 -->
 <div id="DataLoading" class="tabcontent">
 
-    <!-- data selector -->
-    <p>Select your data here: <input id="upload" type="file"></p>
+    <p>Select your time data here: <input id="upload1" type="file"></p>
+    <p>Select the clustered data here: <input id="upload2" type="file"></p>
 
     <!-- data table -->
-    <div id="dataTable"></div>
+    <div id="dataTable1"></div>
+
+    <div id="paginationControls1" class="pagination"></div>
+
+    <!-- data table -->
+    <div id="dataTable2"></div>
+
+    <div id="paginationControls2" class="pagination"></div>
+
+
 
 </div>
 
@@ -124,19 +139,23 @@ add interaction between charts
         <!-- chart 1 -->
         <div class="container">
            <h2>Chart 1</h2>
-			<h4>Data representation 1.</h4>
-            <!-- radar chart SVG -->
-            <div id="chart1"></div>
-            <div id="counter" class="info-block">
-            
-            </div>
+           <h4>Data representation 1.</h4>
+           <!-- Dropdown menu for month selection -->
+           <div>
+                <label for="monthSelect">Select Month:</label>
+                <select id="monthSelect">
+                    <!-- Options will be populated dynamically -->
+                </select>
+           </div>
+           <!-- radar chart SVG -->
+           <div id="chart1"></div>
+           <div id="counter" class="info-block"></div>
         </div>
         
-
         <!-- chart 2 -->
         <div class="container">
            <h2>Chart 2</h2>
-			 <h4>Data representation 2.</h4>
+             <h4>Data representation 2.</h4>
             <!-- radar chart SVG -->
             <div id="chart2"></div>
         </div>
@@ -144,7 +163,7 @@ add interaction between charts
         <!-- chart 3 -->
         <div class="container">
             <h2>Chart 3</h2>
-			  <h4>Data representation 3.</h4>
+              <h4>Data representation 3.</h4>
             <!-- radar chart SVG -->
             <div id="chart3"></div>
         </div>
@@ -160,6 +179,7 @@ add interaction between charts
     </div>
 
 </div>
+
 
 
 </body>

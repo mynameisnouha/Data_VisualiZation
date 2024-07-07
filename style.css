@@ -10,6 +10,35 @@
 .optional {
     color: darkgreen;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.pageButtonClass, .pageButtonClass:disabled {
+    border: 1px solid #ddd;
+    padding: 8px 16px;
+    margin: 0 4px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.pageButtonClass:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.pageButtonClass.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pageButtonClass.disabled {
+    cursor: not-allowed;
+    color: #aaa;
+}
 
 /* Style tab links */
 .tablink {
