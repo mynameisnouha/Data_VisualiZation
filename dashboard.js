@@ -647,6 +647,103 @@ function createChart3(svg, parsedData) {
 
 
 function createChart4(){
+    document.addEventListener('DOMContentLoaded', function() {
+    const margin = { top: 20, right: 50, bottom: 50, left: 50 };
+    const width = 960 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
+
+    const svg = d3.select("#chart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const fileInput = document.getElementById("upload");
+
+    fileInput.addEventListener('change', function() {
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            const csvData = reader.result;
+            const data = d3.csvParse(csvData, d3.autoType);
+
+            // Convert month numbers to month names
+            data.forEach(d => {
+                d.Month = months[d.Month - 1];
+            });
+
+            // Group data by month
+            const dataByMonth = d3.groups(data, d => d.Month);
+
+            const x = d3.scaleBand()
+                .domain(months)
+                .range([0, width])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d['KWH/hh (per half hour)'])])
+                .nice()
+                .range([height, 0]);
+
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("class", "axis-label")
+                .attr("transform", "rotate(-45)")
+                .style("text-anchor", "end");
+
+            svg.append("g")
+                .call(d3.axisLeft(y))
+                .selectAll("text")
+                .attr("class", "axis-label");
+
+            const boxWidth = x.bandwidth() * 0.8;
+
+            dataByMonth.forEach(([month, values]) => {
+                const sortedValues = values.map(d => d['KWH/hh (per half hour)']).sort(d3.ascending);
+                const q1 = d3.quantile(sortedValues, 0.25);
+                const median = d3.quantile(sortedValues, 0.5);
+                const q3 = d3.quantile(sortedValues, 0.75);
+                const interQuantileRange = q3 - q1;
+                const min = d3.min(sortedValues);
+                const max = d3.max(sortedValues);
+
+                const monthGroup = svg.append("g").attr("transform", `translate(${x(month)},0)`);
+
+                // Whiskers
+                monthGroup.append("line")
+                    .attr("class", "whisker")
+                    .attr("x1", boxWidth / 2)
+                    .attr("x2", boxWidth / 2)
+                    .attr("y1", y(min))
+                    .attr("y2", y(max));
+
+                // Box
+                monthGroup.append("rect")
+                    .attr("class", "box")
+                    .attr("x", -boxWidth / 2)
+                    .attr("y", y(q3))
+                    .attr("height", y(q1) - y(q3))
+                    .attr("width", boxWidth);
+
+                // Median line
+                monthGroup.append("line")
+                    .attr("class", "median")
+                    .attr("x1", -boxWidth / 2)
+                    .attr("x2", boxWidth / 2)
+                    .attr("y1", y(median))
+                    .attr("y2", y(median));
+            });
+        };
+
+        reader.readAsBinaryString(fileInput.files[0]);
+    });
+});
+
 
 }
 
