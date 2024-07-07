@@ -16,7 +16,19 @@
     align-items: center;
     margin-top: 10px;
 }
-
+.dot {
+    fill: black;
+}
+.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 5px;
+    font: 12px sans-serif;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    pointer-events: none;
+}
 .pageButtonClass, .pageButtonClass:disabled {
     border: 1px solid #ddd;
     padding: 8px 16px;

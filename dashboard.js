@@ -592,38 +592,58 @@ The d3.csvParse function parses the CSV data, converting it into a format suitab
 */
 
 function createChart3(svg, parsedData) {
-    const margin = { top: 20, right: 30, bottom: 40, left: 40 },
-        width = 800 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+    
+        const margin = { top: 20, right: 30, bottom: 40, left: 40 },
+            width = 800 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+    
+        const x = d3.scaleLinear()
+            .domain(d3.extent(parsedData, d => d['component_1']))
+            .range([0, width]);
+    
+        const y = d3.scaleLinear()
+            .domain(d3.extent(parsedData, d => d['component_2']))
+            .range([height, 0]);
+    
+        svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+    
+        svg.append("g")
+            .call(d3.axisLeft(y));
+    
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            .style("background-color", "#fff")
+            .style("border", "1px solid #ccc")
+            .style("padding", "5px")
+            .style("pointer-events", "none")
+            .style("opacity", 0)
+            .style("color", "black");  // Ensure the text color is black
+    
+        svg.selectAll(".dot")
+            .data(parsedData)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("cx", d => x(d['component_1']))
+            .attr("cy", d => y(d['component_2']))
+            .attr("r", 3.5)
+            .on("mouseover", (event, d) => {
+                console.log("Hovered Data:", d.LCLid);
+                tooltip.transition().duration(200).style("opacity", .9);
+                tooltip.html(`LCLID: ${d.LCLid}`)
+                    .style("left", (event.pageX + 5) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", () => {
+                tooltip.transition().duration(500).style("opacity", 0);
+            });
+    }
+    
 
-    const x = d3.scaleLinear()
-        .domain(d3.extent(parsedData, d => d['component_1']))
-        .range([0, width]);
-
-    console.log("x scale domain:", x.domain());
-    console.log("x scale range:", x.range());
-
-    const y = d3.scaleLinear()
-        .domain(d3.extent(parsedData, d => d['component_2']))
-        .range([height, 0]);
-
-    svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
-
-    svg.append("g")
-        .call(d3.axisLeft(y));
-
-    svg.selectAll(".dot")
-        .data(parsedData)
-        .enter().append("circle")
-        .attr("class", "dot")
-        .attr("cx", d => x(d['component_1']))
-        .attr("cy", d => y(d['component_2']))
-        .attr("r", 3.5);
-}
 
 
 function createChart4(){
