@@ -14,22 +14,41 @@
 
 // TODO: use descriptive names for variables
 
-
-let counter, chart1, chart2, chart3, chart4, Mean_KHW_January;
+let counter, chart1, chart2, chart3, chart4;
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 function initDashboard(_data) {
-    // Populate the month dropdown
-    const monthSelect = d3.select("#monthSelect");
-    monthSelect.selectAll("option")
-        .data(months)
-        .enter()
-        .append("option")
-        .text(d => d)
-        .attr("value", d => d);
-    // TODO: Initialize the environment (SVG, etc.) and call the nedded methods
-    console.log('we are readable here :), clustered data', parsedData1)
-    console.log('we are readable here :), time data', parsedData2)
 
+
+    // TODO: Initialize the environment (SVG, etc.) and call the nedded methods
+    console.log('we are readable here :), time data', parsedData1)
+    console.log('we are readable here :), clustered data', parsedData2)
+    
+         // Populate the year dropdown
+const years = Array.from(new Set(parsedData1.map(d => d.Year)));  // Extract unique years
+const months = Array.from(new Set(parsedData1.map(d => d.Month)))
+    .map(month => ({ value: month, text: month }));  // Convert to text for display
+    console.log('years',years)
+const yearSelect = d3.select("#yearSelect");
+yearSelect.selectAll("option")
+    .data(years)
+    .enter()
+    .append("option")
+    .text(d => d)
+    .attr("value", d => d);
+
+// Populate the month dropdown
+const monthSelect = d3.select("#monthSelect");
+monthSelect.selectAll("option")
+    .data(months)
+    .enter()
+    .append("option")
+    .text(d => d.text)
+    .attr("value", d => d.value);
+
+    const defaultYear = years[0];
+    const defaultMonth = months[0].value;
+
+    
     //  SVG container
     chart1 = d3.select("#chart1").append("svg")
         .attr("width", width)
@@ -64,16 +83,25 @@ function initDashboard(_data) {
 
         
     createcounter(counter, parsedData2);
-    //createChart1(chart1, parsedData, "January");
-
+    //d3.select("#updateChart").on("click", () => {
+      //  createChart1(chart1, parsedData1, defaultYear, defaultMonth);
+    //});
     createChart2(chart2,parsedData1);
     createChart3(chart3, parsedData2);
     createChart4();
-    // Add an event listener to update the chart1 based on the selected month
-    //d3.select("#monthSelect").on("change", function() {
-      //  const selectedMonth = d3.select(this).property("value");
-      //  createChart1(chart1, parsedData, selectedMonth);
-    //});
+    // Function to update the chart based on selected month and year
+    function updateChart() {
+        const selectedMonth = d3.select("#monthSelect").property("value");
+        const selectedYear = d3.select("#yearSelect").property("value");
+        createChart1(chart1, parsedData1, selectedYear, selectedMonth);
+    }
+
+    // Add event listeners to update the chart1 based on the selected month or year
+    d3.select("#monthSelect").on("change", updateChart);
+    d3.select("#yearSelect").on("change", updateChart);
+
+    // Call the updateChart function initially to render the chart with default values
+    updateChart();
 }
 
     function createcounter(svg, parsedData) {
@@ -308,6 +336,115 @@ function initDashboard(_data) {
             
     }
     */
+    function createChart1(svg, parsedData, selectedYear, selectedMonth) {
+        const margin = { top: 10, right: 30, bottom: 30, left: 40 };
+        const width = 600 - margin.left - margin.right;
+        const height = 400 - margin.top - margin.bottom;
+    
+        // Filter the data for the selected year and month
+        const filteredData = parsedData.filter(d => d.Year == selectedYear && d.Month == selectedMonth);
+        console.log("Filtered data:", filteredData);
+    
+        // Group the data by LCLid and compute the average KWH per LCLid
+        const dataByLCLid = d3.rollup(filteredData, 
+            v => d3.mean(v, d => +d['KWH/hh (per half hour) ']),
+            d => d.LCLid
+        );
+        console.log("Data by LCLid:", dataByLCLid);
+    
+        const data = Array.from(dataByLCLid.values());  // Get the average KWH values
+        console.log("Average KWH values:", data);
+    
+        // Calculate number of data points
+        const n = data.length;
+    
+        // Define the scales for the x and y axes
+        const maxMeanKWH = d3.max(data);
+        const x = d3.scaleLinear()
+            .domain([0, maxMeanKWH])  // Domain based on data
+            .range([0, width]);  // Map the range to the width of the chart
+        console.log("x scale domain:", x.domain());
+        console.log("x scale range:", x.range());
+    
+        // Define the KDE functions
+        function kernelDensityEstimator(kernel, X) {
+            return function(V) {
+                return X.map(function(x) {
+                    return [x, d3.mean(V, function(v) { return kernel(x - v); })];
+                });
+            };
+        }
+    
+        // Calculate standard deviation and bandwidth for Epanechnikov kernel
+        const stdDev = d3.deviation(data);
+        const bandwidth = 1.06 * stdDev * Math.pow(n, -1/5);
+        console.log("Bandwidth:", bandwidth);
+    
+        function kernelEpanechnikov(k) {
+            return function(v) {
+                return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+            };
+        }
+    
+        // Compute kernel density estimation
+        const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), x.ticks(40));
+        const density = kde(data);
+        console.log("Density:", density);
+    
+        // Compute min and max density values for the y scale
+        const minDensity = d3.min(density, d => d[1]);
+        const maxDensity = d3.max(density, d => d[1]);
+        console.log("Density range:", [minDensity, maxDensity]);
+    
+        // Define the y scale based on the density
+        const y = d3.scaleLinear()
+            .domain([minDensity, maxDensity])
+            .range([height, 0]);
+        console.log("y scale domain:", y.domain());
+        console.log("y scale range:", y.range());
+    
+        // Clear previous content in the SVG
+        svg.selectAll('*').remove();
+    
+        // Append the x and y axes to the chart
+        svg.append("g")
+            .attr("transform", `translate(${margin.left}, ${height + margin.top})`)
+            .call(d3.axisBottom(x))
+            .append("text")
+            .attr("fill", "#000")
+            .attr("x", width / 2)
+            .attr("y", margin.bottom - 5)
+            .attr("text-anchor", "middle")
+            .text("KWH");
+    
+        svg.append("g")
+            .attr("transform", `translate(${margin.left}, ${margin.top})`)
+            .call(d3.axisLeft(y))
+            .append("text")
+            .attr("fill", "#000")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 10)
+            .attr("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .text("Density");
+    
+        // Plot the density distribution area
+        svg.append("path")
+            .attr("class", "mypath")
+            .datum(density)
+            .attr("fill", "#69b3a2")
+            .attr("opacity", ".8")
+            .attr("stroke", "#000")
+            .attr("stroke-width", 1)
+            .attr("stroke-linejoin", "round")
+            .attr("d", d3.line()
+                .curve(d3.curveBasis)
+                .x(d => x(d[0]) + margin.left)
+                .y(d => y(d[1]) + margin.top)
+            );
+    }
+    
+    
 function createChart2(svg, parsedData) {
     const margin = { top: 20, right: 50, bottom: 50, left: 50 };
     const width = 960 - margin.left - margin.right;
@@ -329,7 +466,7 @@ function createChart2(svg, parsedData) {
     // Calculate total consumption for each user
     const totalConsumption = parsedData.map(d => ({
         LCLid: d.LCLid,
-        total: months.reduce((sum, month) => sum + (+d[`Mean_KWH_${month}`] || 0), 0)
+        total: months.reduce((sum, month) => sum + (+d[`Mean_KWH_${month} `] || 0), 0)
     }));
 
 
@@ -354,7 +491,7 @@ function createChart2(svg, parsedData) {
     const dataMelted = filteredData.flatMap(d => months.map(month => ({
         LCLid: d.LCLid,
         Month: month,
-        Mean_KWH: +d[`Mean_KWH_${month}`]  // Convert to number
+        Mean_KWH: +d[`Mean_KWH_${month} `]  // Convert to number
     })));
 
     //console.log("Data melted", dataMelted);
