@@ -17,91 +17,98 @@
 let counter, chart1, chart2, chart3, chart4;
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 function initDashboard(_data) {
-
-
-    // TODO: Initialize the environment (SVG, etc.) and call the nedded methods
-    console.log('we are readable here :), time data', parsedData1)
-    console.log('we are readable here :), clustered data', parsedData2)
-    
-         // Populate the year dropdown
-const years = Array.from(new Set(parsedData1.map(d => d.Year)));  // Extract unique years
-const months = Array.from(new Set(parsedData1.map(d => d.Month)))
-    .map(month => ({ value: month, text: month }));  // Convert to text for display
-    console.log('years',years)
-const yearSelect = d3.select("#yearSelect");
-yearSelect.selectAll("option")
-    .data(years)
-    .enter()
-    .append("option")
-    .text(d => d)
-    .attr("value", d => d);
-
-// Populate the month dropdown
-const monthSelect = d3.select("#monthSelect");
-monthSelect.selectAll("option")
-    .data(months)
-    .enter()
-    .append("option")
-    .text(d => d.text)
-    .attr("value", d => d.value);
-
-    const defaultYear = years[0];
-    const defaultMonth = months[0].value;
-
-    
-    //  SVG container
-    chart1 = d3.select("#chart1").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g");
-
-      //  SVG container
-      counter = d3.select("#counter").append("svg")
-      .attr("width", 300)  // Increased width
-      .attr("height", 150)  // Increased height
-      .append("g");
-  
-    //  SVG container
-    chart2 = d3.select("#chart2").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g");
-
-
-    //  SVG container
-    chart3 = d3.select("#chart3").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g");
-
-
-    //  SVG container
-    chart4 = d3.select("#chart4").append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g");
-
-        
-    createcounter(counter, parsedData2);
-    //d3.select("#updateChart").on("click", () => {
-      //  createChart1(chart1, parsedData1, defaultYear, defaultMonth);
-    //});
-    createChart2(chart2,parsedData1);
-    createChart3(chart3, parsedData2);
-    createChart4();
-    // Function to update the chart based on selected month and year
-    function updateChart() {
-        const selectedMonth = d3.select("#monthSelect").property("value");
-        const selectedYear = d3.select("#yearSelect").property("value");
-        createChart1(chart1, parsedData1, selectedYear, selectedMonth);
+    if (!parsedData1 || !parsedData2) {
+        console.error('Data is undefined');
+        return;
     }
 
-    // Add event listeners to update the chart1 based on the selected month or year
-    d3.select("#monthSelect").on("change", updateChart);
-    d3.select("#yearSelect").on("change", updateChart);
+    console.log('we are readable here :), time data', parsedData1);
+    console.log('we are readable here :), clustered data', parsedData2);
 
-    // Call the updateChart function initially to render the chart with default values
-    updateChart();
+    // Ensure year and month data is properly defined
+    const years = Array.from(new Set(parsedData1.map(d => d.Year)));
+    const months = Array.from(new Set(parsedData1.map(d => d.Month)))
+        .map(month => ({ value: month, text: month }));
+    
+    if (years.length === 0 || months.length === 0) {
+        console.error('No valid year or month data found');
+        return;
+    }
+    console.log('years',years)
+    const yearSelect = d3.select("#yearSelect");
+    yearSelect.selectAll("option")
+        .data(years)
+        .enter()
+        .append("option")
+        .text(d => d)
+        .attr("value", d => d);
+
+    // Populate the month dropdown
+    const monthSelect = d3.select("#monthSelect");
+    monthSelect.selectAll("option")
+        .data(months)
+        .enter()
+        .append("option")
+        .text(d => d.text)
+        .attr("value", d => d.value);
+
+        const defaultYear = years[0];
+        const defaultMonth = months[0].value;
+
+        
+        //  SVG container
+        chart1 = d3.select("#chart1").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g");
+
+        //  SVG container
+        counter = d3.select("#counter").append("svg")
+        .attr("width", 300)  // Increased width
+        .attr("height", 150)  // Increased height
+        .append("g");
+    
+        //  SVG container
+        chart2 = d3.select("#chart2").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g");
+
+
+        //  SVG container
+        chart3 = d3.select("#chart3").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g");
+
+
+        //  SVG container
+        chart4 = d3.select("#chart4").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g");
+
+            
+        createcounter(counter, parsedData2);
+        //d3.select("#updateChart").on("click", () => {
+        //  createChart1(chart1, parsedData1, defaultYear, defaultMonth);
+        //});
+        createChart2(chart2,parsedData1);
+        createChart3(chart3, parsedData2);
+        createChart4();
+        // Function to update the chart based on selected month and year
+        function updateChart() {
+            const selectedMonth = d3.select("#monthSelect").property("value");
+            const selectedYear = d3.select("#yearSelect").property("value");
+            createChart1(chart1, parsedData1, selectedYear, selectedMonth);
+        }
+
+        // Add event listeners to update the chart1 based on the selected month or year
+        d3.select("#monthSelect").on("change", updateChart);
+        d3.select("#yearSelect").on("change", updateChart);
+
+        // Call the updateChart function initially to render the chart with default values
+        updateChart();
 }
 
     function createcounter(svg, parsedData) {
@@ -443,148 +450,119 @@ monthSelect.selectAll("option")
                 .y(d => y(d[1]) + margin.top)
             );
     }
+
+    
+    function createChart2(svg, parsedData) {
+        const margin = { top: 20, right: 50, bottom: 50, left: 50 };
+        const width = 960 - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
+    
+        // Remove any existing chart
+        svg.selectAll("*").remove();
+    
+        // Set up the SVG element with the proper dimensions and margins
+        const chartGroup = svg
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+    
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+        // Calculate total consumption for each user
+        const totalConsumption = parsedData.map(d => ({
+            LCLid: d.LCLid,
+            total: months.reduce((sum, month) => sum + (+d[`Mean_KWH_${month}`] || 0), 0)
+        }));
+    
+        // Sort users by total consumption
+        totalConsumption.sort((a, b) => b.total - a.total);
+    
+        // Select top 2 and least 2 consumers
+        const selectedUsers = [
+            ...totalConsumption.slice(0, 2),
+            ...totalConsumption.slice(-2)
+        ].map(d => d.LCLid);
+    
+        // Filter data for selected users
+        const filteredData = parsedData.filter(d => selectedUsers.includes(d.LCLid));
+    
+        const dataMelted = filteredData.flatMap(d => months.map(month => ({
+            LCLid: d.LCLid,
+            Month: month,
+            Mean_KWH: +d[`Mean_KWH_${month}`] || 0  // Convert to number and handle NaN
+        })));
+    
+        const x = d3.scaleBand()
+            .domain(months)
+            .range([0, width])
+            .padding(0.1);
+    
+        const y = d3.scaleLinear()
+            .domain([0, d3.max(dataMelted, d => d.Mean_KWH)])
+            .nice()
+            .range([height, 0]);
+    
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
+    
+        const line = d3.line()
+            .x(d => x(d.Month) + x.bandwidth() / 2)
+            .y(d => y(d.Mean_KWH));
+    
+        chartGroup.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(x))
+            .selectAll("text")
+            .attr("class", "axis-label")
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
+    
+        chartGroup.append("g")
+            .call(d3.axisLeft(y))
+            .selectAll("text")
+            .attr("class", "axis-label");
+    
+        const userData = d3.groups(dataMelted, d => d.LCLid);
+    
+        userData.forEach(([user_id, values]) => {
+            // Filter out invalid data points
+            const validValues = values.filter(v => !isNaN(v.Mean_KWH));
+    
+            chartGroup.append("path")
+                .datum(validValues)
+                .attr("fill", "none")
+                .attr("stroke", color(user_id))
+                .attr("stroke-width", 1.5)
+                .attr("d", line)
+                .attr("class", "line");
+        });
+    
+        const legend = chartGroup.append("g")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 10)
+            .attr("text-anchor", "end")
+            .selectAll("g")
+            .data(userData)
+            .enter().append("g")
+            .attr("transform", (d, i) => `translate(0,${i * 20})`);
+    
+        legend.append("rect")
+            .attr("x", width + 20)
+            .attr("width", 19)
+            .attr("height", 19)
+            .attr("fill", d => color(d[0]));
+    
+        legend.append("text")
+            .attr("x", width + 15)
+            .attr("y", 9.5)
+            .attr("dy", "0.32em")
+            .text(d => d[0])
+            .attr("class", "legend");
+    }
     
     
-function createChart2(svg, parsedData) {
-    const margin = { top: 20, right: 50, bottom: 50, left: 50 };
-    const width = 960 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
-
-    // Remove any existing chart
-    svg.selectAll("*").remove();
-
-    // Set up the SVG element with the proper dimensions and margins
-    svg = svg
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-    // Calculate total consumption for each user
-    const totalConsumption = parsedData.map(d => ({
-        LCLid: d.LCLid,
-        total: months.reduce((sum, month) => sum + (+d[`Mean_KWH_${month} `] || 0), 0)
-    }));
-
-
-    // Sort users by total consumption
-    totalConsumption.sort((a, b) => b.total - a.total);
-
-    //console.log("Total consumption sorted", totalConsumption);
-
-    // Select top 2 and least 2 consumers
-    const selectedUsers = [
-        ...totalConsumption.slice(0, 2),
-        ...totalConsumption.slice(-2)
-    ].map(d => d.LCLid);
-
-    //console.log("Selected users", selectedUsers);
-
-    // Filter data for selected users
-    const filteredData = parsedData.filter(d => selectedUsers.includes(d.LCLid));
-
-   // console.log("Filtered data", filteredData);
-
-    const dataMelted = filteredData.flatMap(d => months.map(month => ({
-        LCLid: d.LCLid,
-        Month: month,
-        Mean_KWH: +d[`Mean_KWH_${month} `]  // Convert to number
-    })));
-
-    //console.log("Data melted", dataMelted);
-
-    const x = d3.scaleBand()
-        .domain(months)
-        .range([0, width])
-        .padding(0.1);
-
-    //console.log("X scale set", x.domain());
-
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(dataMelted, d => d.Mean_KWH)])
-        .nice()
-        .range([height, 0]);
-
-    //console.log("Y scale set", y.domain());
-
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
-
-    const line = d3.line()
-        .x(d => x(d.Month))
-        .y(d => y(d.Mean_KWH));
-
-    svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-        .attr("class", "axis-label")
-        .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
-
-    //console.log("X axis added");
-
-    svg.append("g")
-        .call(d3.axisLeft(y))
-        .selectAll("text")
-        .attr("class", "axis-label");
-
-    //console.log("Y axis added");
-
-    const userData = d3.groups(dataMelted, d => d.LCLid);
-
-    //console.log("User data grouped", userData);
-
-    userData.forEach(([user_id, values]) => {
-        svg.append("path")
-            .datum(values)
-            .attr("fill", "none")
-            .attr("stroke", color(user_id))
-            .attr("stroke-width", 1.5)
-            .attr("d", line)
-            .attr("class", "line");
-
-        //console.log(`Line added for user ${user_id}`);
-
-        svg.selectAll(`.dot-${user_id}`)
-            .data(values)
-            .enter()
-            .append("circle")
-            .attr("class", `dot-${user_id}`)
-            .attr("cx", d => x(d.Month))
-            .attr("cy", d => y(d.Mean_KWH))
-            .attr("r", 3)
-            .attr("fill", color(user_id));
-
-        //console.log(`Dots added for user ${user_id}`);
-    });
-
-    const legend = svg.append("g")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", 10)
-        .attr("text-anchor", "end")
-        .selectAll("g")
-        .data(userData)
-        .enter().append("g")
-        .attr("transform", (d, i) => `translate(0,${i * 20})`);
-
-    legend.append("rect")
-        .attr("x", width + 20)
-        .attr("width", 19)
-        .attr("height", 19)
-        .attr("fill", d => color(d[0]));
-
-    legend.append("text")
-        .attr("x", width + 15)
-        .attr("y", 9.5)
-        .attr("dy", "0.32em")
-        .text(d => d[0])
-        .attr("class", "legend");
-
-    //console.log("Legend added");
-}
+    
+    
 
 
 /* The FileReader API reads the selected CSV file and triggers the onloadend event.
@@ -592,158 +570,41 @@ The d3.csvParse function parses the CSV data, converting it into a format suitab
 */
 
 function createChart3(svg, parsedData) {
-    
-        const margin = { top: 20, right: 30, bottom: 40, left: 40 },
-            width = 800 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
-    
-        const x = d3.scaleLinear()
-            .domain(d3.extent(parsedData, d => d['component_1']))
-            .range([0, width]);
-    
-        const y = d3.scaleLinear()
-            .domain(d3.extent(parsedData, d => d['component_2']))
-            .range([height, 0]);
-    
-        svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
-    
-        svg.append("g")
-            .call(d3.axisLeft(y));
-    
-        const tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("position", "absolute")
-            .style("background-color", "#fff")
-            .style("border", "1px solid #ccc")
-            .style("padding", "5px")
-            .style("pointer-events", "none")
-            .style("opacity", 0)
-            .style("color", "black");  // Ensure the text color is black
-    
-        svg.selectAll(".dot")
-            .data(parsedData)
-            .enter().append("circle")
-            .attr("class", "dot")
-            .attr("cx", d => x(d['component_1']))
-            .attr("cy", d => y(d['component_2']))
-            .attr("r", 3.5)
-            .on("mouseover", (event, d) => {
-                console.log("Hovered Data:", d.LCLid);
-                tooltip.transition().duration(200).style("opacity", .9);
-                tooltip.html(`LCLID: ${d.LCLid}`)
-                    .style("left", (event.pageX + 5) + "px")
-                    .style("top", (event.pageY - 28) + "px");
-            })
-            .on("mouseout", () => {
-                tooltip.transition().duration(500).style("opacity", 0);
-            });
-    }
-    
+    const margin = { top: 20, right: 30, bottom: 40, left: 40 },
+        width = 800 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
+    const x = d3.scaleLinear()
+        .domain(d3.extent(parsedData, d => d['component_1']))
+        .range([0, width]);
+
+    console.log("x scale domain:", x.domain());
+    console.log("x scale range:", x.range());
+
+    const y = d3.scaleLinear()
+        .domain(d3.extent(parsedData, d => d['component_2']))
+        .range([height, 0]);
+
+    svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    svg.selectAll(".dot")
+        .data(parsedData)
+        .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", d => x(d['component_1']))
+        .attr("cy", d => y(d['component_2']))
+        .attr("r", 3.5);
+}
 
 
 function createChart4(){
-    document.addEventListener('DOMContentLoaded', function() {
-    const margin = { top: 20, right: 50, bottom: 50, left: 50 };
-    const width = 960 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
-
-    const svg = d3.select("#chart")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-    const fileInput = document.getElementById("upload");
-
-    fileInput.addEventListener('change', function() {
-        const reader = new FileReader();
-
-        reader.onloadend = function() {
-            const csvData = reader.result;
-            const data = d3.csvParse(csvData, d3.autoType);
-
-            // Convert month numbers to month names
-            data.forEach(d => {
-                d.Month = months[d.Month - 1];
-            });
-
-            // Group data by month
-            const dataByMonth = d3.groups(data, d => d.Month);
-
-            const x = d3.scaleBand()
-                .domain(months)
-                .range([0, width])
-                .padding(0.1);
-
-            const y = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d['KWH/hh (per half hour)'])])
-                .nice()
-                .range([height, 0]);
-
-            svg.append("g")
-                .attr("transform", `translate(0,${height})`)
-                .call(d3.axisBottom(x))
-                .selectAll("text")
-                .attr("class", "axis-label")
-                .attr("transform", "rotate(-45)")
-                .style("text-anchor", "end");
-
-            svg.append("g")
-                .call(d3.axisLeft(y))
-                .selectAll("text")
-                .attr("class", "axis-label");
-
-            const boxWidth = x.bandwidth() * 0.8;
-
-            dataByMonth.forEach(([month, values]) => {
-                const sortedValues = values.map(d => d['KWH/hh (per half hour)']).sort(d3.ascending);
-                const q1 = d3.quantile(sortedValues, 0.25);
-                const median = d3.quantile(sortedValues, 0.5);
-                const q3 = d3.quantile(sortedValues, 0.75);
-                const interQuantileRange = q3 - q1;
-                const min = d3.min(sortedValues);
-                const max = d3.max(sortedValues);
-
-                const monthGroup = svg.append("g").attr("transform", `translate(${x(month)},0)`);
-
-                // Whiskers
-                monthGroup.append("line")
-                    .attr("class", "whisker")
-                    .attr("x1", boxWidth / 2)
-                    .attr("x2", boxWidth / 2)
-                    .attr("y1", y(min))
-                    .attr("y2", y(max));
-
-                // Box
-                monthGroup.append("rect")
-                    .attr("class", "box")
-                    .attr("x", -boxWidth / 2)
-                    .attr("y", y(q3))
-                    .attr("height", y(q1) - y(q3))
-                    .attr("width", boxWidth);
-
-                // Median line
-                monthGroup.append("line")
-                    .attr("class", "median")
-                    .attr("x1", -boxWidth / 2)
-                    .attr("x2", boxWidth / 2)
-                    .attr("y1", y(median))
-                    .attr("y2", y(median));
-            });
-        };
-
-        reader.readAsBinaryString(fileInput.files[0]);
-    });
-});
-
 
 }
 
