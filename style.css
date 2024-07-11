@@ -1,102 +1,196 @@
+/* General Body Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8; /* Very light blue */
+    color: #333;
+}
+
+/* Header Styles */
+header {
+    background-color: #a0c4ff; /* Pastel blue */
+    color: #333;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+}
+
+/* Credits Section */
 #credits {
-    font: 12px sans-serif;
-    padding-bottom: 1%;
+    font-size: 0.8rem;
+    padding-bottom: 1rem;
 }
 
+/* Instructions Styles */
 .instructions {
-    color: red;
+    color: #7db9ff; /* Light blue */
 }
 
-.optional {
-    color: darkgreen;
+/* Navigation Bar */
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #d0e6ff; /* Very light blue */
+    width: 100%;
 }
+
+/* Main Content Area */
+main {
+    padding: 1rem;
+    width: 100%;
+}
+
+/* Tab Content Styles */
+.tabcontent {
+    display: none;
+    padding: 1rem;
+    background-color: #ffffff; /* White */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 1rem 0;
+    border-radius: 8px;
+}
+
+/* File Upload Styles */
+.file-upload {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* Added gap for better spacing */
+}
+
+/* File Label Styles */
+.file-label {
+    font-weight: bold;
+    color: #a0c4ff; /* Pastel blue */
+}
+
+/* File Input Styles */
+.file-input {
+    padding: 0.5rem;
+    border: 1px solid #b0bec5; /* Light grey-blue */
+    border-radius: 4px;
+    max-width: 100%;
+}
+
+/* Table Container Styles */
+.table-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    overflow-x: auto; /* Horizontal scrollbar */
+}
+
+/* Table Wrapper Styles */
+.table-wrapper {
+    min-width: 0;
+    flex: 1;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow-x: auto; /* Horizontal scrollbar */
+    background-color: #ffffff; /* White */
+    padding: 10px;
+}
+
+/* Table Info Styles */
+.table-info {
+    font-size: 0.9rem;
+    color: #666; /* Grey text for row count */
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* Data Table Styles */
+.data-table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed; /* Fix table layout for horizontal scrolling */
+}
+
+/* Table Header Styles */
+.data-table th, .data-table td {
+    border: 1px solid #b0bec5; /* Light grey-blue */
+    padding: 8px;
+    text-align: left;
+}
+
+/* Header Cell Styles */
+.data-table th {
+    background-color: #d0e6ff; /* Very light blue */
+    color: #333;
+}
+
+/* Table Cell Styles */
+.data-table td {
+    background-color: #ffffff; /* White */
+}
+
+/* Hover Effect for Single Table Cell */
+.data-table td:hover {
+    background-color: #e0e8f9; /* Very light blue */
+}
+
+/* Pagination Styles */
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 1rem;
 }
-.dot {
-    fill: black;
-}
-.tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 5px;
-    font: 12px sans-serif;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    pointer-events: none;
-}
+
+/* Pagination Button Styles */
 .pageButtonClass, .pageButtonClass:disabled {
-    border: 1px solid #ddd;
-    padding: 8px 16px;
-    margin: 0 4px;
+    border: 1px solid #b0bec5; /* Light grey-blue */
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
     text-decoration: none;
-    color: black;
+    color: #333;
     cursor: pointer;
+    background-color: #ffffff; /* White */
 }
 
+/* Hover Effect for Pagination Buttons */
 .pageButtonClass:hover:not(.active) {
-    background-color: #ddd;
+    background-color: #e0e8f9; /* Very light blue */
 }
 
+/* Active Pagination Button Styles */
 .pageButtonClass.active {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #a0c4ff; /* Pastel blue */
+    color: #fff;
 }
 
+/* Disabled Pagination Button Styles */
 .pageButtonClass.disabled {
     cursor: not-allowed;
     color: #aaa;
 }
 
-/* Style tab links */
-.tablink {
-    background-color: #555;
-    color: white;
-    float: left;
-    margin: 0.5px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    font-size: 17px;
-    width: 33%;
+/* Wrapper Styles */
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
-.tablink:hover {
-    background-color: #777;
+/* Container Styles */
+.container {
+    flex: 1;
+    padding: 1rem;
+    background-color: #ffffff; /* White */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden; /* Ensure contents don't overflow */
 }
 
-.dataTableClass {
-    width: 80%;
-    border-collapse: collapse;
-    border: 2px black solid;
-}
-
-.tableHeaderClass {
-    border: 2px solid black;
-    padding: 5px;
-    background-color: lightgray;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-svg {
- 
-        font: 10px sans-serif;
-        padding: -20px;
-    }
-
-
+/* Dashboard Grid Styles */
 .dashboardGrid {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
 
+/* Axis Styles */
 .axis line,
 .axis path {
     fill: none;
@@ -104,101 +198,354 @@ svg {
     shape-rendering: crispEdges;
 }
 
-.axis text {
-    fill: black;
+/* Legend Styles */
+.legend {
+    font-size: 1rem;
+    color: #333;
 }
 
-fieldset {
-    border-width: 0;
+/* Button, Input, Select, Textarea Styles */
+button, input, select, textarea {
+    font-size: 1rem;
 }
 
-#legend {
-    border: 1px solid black;
-    padding: 10px;
-}
-
-/* the style for the close-button in the legend */
-.close {
-    display: inline-block;
-    padding: 1px 5px;
-    margin: 4px;
-    border: 1px solid black;
-    color: #000;
-    background: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-}
-.hovered-cell {
-    background-color:#e0e9f0;; /* Change to the desired background color */
-}
-
-.close:hover {
-    background: #ddd;
-    cursor: pointer;
-}
-
-/* the style for the circle in the legend */
-.color-circle {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-/* the style for dots in the scatterplot */
-.dot {
-    cursor: pointer;
-}
-
-/* tooltip for the scatterplot */
-div.tooltip {
-    position: absolute;
-    text-align: left;
-    padding: .2rem;
-    margin: 1rem;
-    background: #313639;
-    color: #f9f9f9;
-    border: 0px;
-    border-radius: 8px;
-    pointer-events: none;
-    font-size: .7rem;
-}
-
-/* Wrapper for both plots */
-.wrapper {
+/* Menu Styles */
+#menu {
     display: flex;
-    height: 100%;
-    width: 100%;
+    justify-content: space-between;
+    background-color: #a0c4ff; /* Pastel blue */
+    color: #333;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    cursor: pointer;
 }
 
-/* Container for each plot */
-.container {
+/* Row Count Display Styles */
+.row-count {
+    font-size: 0.9rem;
+    color: #666; /* Grey text for row count */
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+/* Scatterplot Styles */
+#scatterplot-container {
+    padding: 20px;
+    background-color: #ffffff; /* White */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.axis-label {
+    font-size: 14px;
+    fill: #333;
+}
+
+.dot:hover {
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 3px;
+    pointer-events: none;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+    font-size: 0.9rem; /* Adjusted font size */
+    color: #333; /* Ensure readability */
+}
+
+.radar-grid {
+    stroke: lightgray;
+    stroke-width: 0.5px;
+    fill: none;
+}
+
+.radar-axis {
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.legend {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Updated styles for scatterplot container */
+#scatterplot-container {
+    padding: 20px;
+    background-color: #ffffff; /* White */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Updated scatterplot styles */
+#sp {
+    width: 100%;
+    height: 600px;
+}
+
+/* Updated control panel styles */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.controls label {
+    font-weight: bold;
+    color: #333;
+}
+
+.controls select {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Updated button styles */
+button {
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: #a0c4ff; /* Pastel blue */
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #7db9ff; /* Light blue */
+}
+
+/* General improvement for tab navigation */
+.tablink {
+    background-color: #d0e6ff; /* Very light blue */
+    color: #333;
+    border: 1px solid #a0c4ff; /* Pastel blue */
+    outline: none;
+    cursor: pointer;
+    padding: 1rem;
+    font-size: 1rem;
     flex: 1;
-    padding: 20px;
-    box-sizing: border-box;
+    text-align: center;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-/* Radar chart specific styling */
-#radar {
-    overflow: visible;
+.tablink:hover {
+    background-color: #a0c4ff; /* Pastel blue */
+    border-color: #7db9ff; /* Light blue */
+}
+
+#scatterplot-container {
+    padding: 20px;
+    background-color: #ffffff; /* White */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: visible; /* Ensure overflow is visible for axis labels */
+}
+
+#sp {
     width: 100%;
-    height: 100%;
-    margin: 20px;
+    height: 650px;  /* Increased height */
+    margin-bottom: 50px; /* Ensure enough space for x-axis label */
 }
 
-/* Tab content styling */
-.tabcontent {
-    color: black;
-    display: none;
+/* Radar Chart Styles */
+#radar-container {
     padding: 20px;
-    height: calc(100vh - 40px); /* Adjust height to fit within the viewport */
-    box-sizing: border-box;
+    background-color: #ffffff; /* White */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    overflow: visible; /* Ensure overflow is visible for axis labels */
 }
 
-/* General body styling */
-body {
-    height: 100%;
-    margin: 0;
-    font: 14px sans-serif;
+.radar-label {
+    font-size: 10px;
+    fill: #333;
+    text-anchor: middle;
+    transform: translateY(-10px); /* Adjust position */
+}
+
+/* Legend Item Styles */
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.color-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.close-button {
+    cursor: pointer;
+    margin-left: 10px;
+    color: red;
+    font-weight: bold;
+}
+
+.info-block {
+    padding: 0.5rem;
+    border: 1px solid #b0bec5;
+    border-radius: 8px;
+    background-color: #f0f4f8;
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+svg {
+    font-family: Arial, sans-serif;
+}
+
+/* Additional styling for cards */
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin: 0.5rem;
+    width: 100%;
+}
+
+
+.chart-container {
+    width: 60%; /* Set the width of the container to 60% */
+    height: auto; /* Maintain aspect ratio */
+    position: relative; /* For positioning of the SVG */
+    margin: 0 auto; /* Center the container */
+}
+
+.chart-container svg {
+    width: 100%; /* SVG will take 100% of the container's width */
+    height: auto; /* Maintain aspect ratio */
+}
+
+
+
+
+/* Chart Header */
+.chart-header {
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+/* Chart Description */
+.chart-description {
+    color: #7db9ff; /* Light blue */
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Add custom arrow to the dropdown */
+/* Filter Dropdown Styles */
+.styled-select {
+    padding: 0.5rem 1rem;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 1rem;
+    color: #007bff;
+    width: 150px;
+    text-align: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjY2NjIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZD0iTTAgMGw1IDUgNSA1eiIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.styled-select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+.styled-select:hover {
+    border-color: #0056b3;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Axis Label Styles */
+.axis-label {
+    font-size: 14px;
+    fill: #333;
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 3px;
+    pointer-events: none;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Legend Styles */
+.legend {
+    font-size: 1rem;
+    color: #333;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
 }
