@@ -402,8 +402,6 @@ function createChart2(svg, parsedData, selectedYear) {
 
     // Sort consumers by mean consumption
     meanConsumptionByLCLid.sort((a, b) => b.meanConsumption - a.meanConsumption);
-    // Sort consumers by mean consumption
-    meanConsumptionByLCLid.sort((a, b) => b.meanConsumption - a.meanConsumption);
 
     // Select top 2 and least 2 consumers
     const top2Consumers = meanConsumptionByLCLid.slice(0, 2);
@@ -424,15 +422,13 @@ function createChart2(svg, parsedData, selectedYear) {
     const x = d3.scaleBand()
         .domain([...Array(12).keys()].map(i => i + 1)) // Adjusted to include all 12 months
         .range([margin.left, width + margin.left])
-        .domain([...Array(12).keys()].map(i => i + 1)) // Adjusted to include all 12 months
-        .range([margin.left, width + margin.left])
         .padding(0.1);
-        const maxValue = d3.max(monthlyData, d => d3.max(Object.values(d).filter(v => typeof v === 'number')));
+
+    const maxValue = d3.max(monthlyData, d => d3.max(Object.values(d).filter(v => typeof v === 'number')));
 
     const y = d3.scaleLinear()
         .domain([0, maxValue])
         .nice()
-        .range([height, margin.top]);
         .range([height, margin.top]);
 
     //console.log("X scale domain:", x.domain());
@@ -440,10 +436,7 @@ function createChart2(svg, parsedData, selectedYear) {
 
     // Clear any previous content
     svg.selectAll('*').remove();
-    // Clear any previous content
-    svg.selectAll('*').remove();
 
-    // Append X axis
     // Append X axis
     svg.append("g")
         .attr("transform", `translate(0, ${height})`)
@@ -454,19 +447,9 @@ function createChart2(svg, parsedData, selectedYear) {
         .attr("y", margin.bottom)
         .attr("text-anchor", "middle")
         .text("Month");
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x).tickFormat(d => `Month ${d}`))
-        .append("text")
-        .attr("fill", "#000")
-        .attr("x", width / 2 + margin.left)
-        .attr("y", margin.bottom)
-        .attr("text-anchor", "middle")
-        .text("Month");
-
-    // Append Y axis
+        
     // Append Y axis
     svg.append("g")
-        .attr("transform", `translate(${margin.left}, 0)`)
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(y))
         .append("text")
@@ -531,15 +514,8 @@ function createChart2(svg, parsedData, selectedYear) {
     // Append legend
     const legend = svg.append("g")
         .attr("transform", `translate(${width + margin.right / 2}, ${margin.top})`);
-        .attr("transform", `translate(${width + margin.right / 2}, ${margin.top})`);
+      
 
-    selectedConsumers.forEach((consumer, i) => {
-        legend.append("rect")
-            .attr("x", 0)
-            .attr("y", i * 20)
-            .attr("width", 10)
-            .attr("height", 10)
-            .attr("fill", color(consumer.LCLid));
     selectedConsumers.forEach((consumer, i) => {
         legend.append("rect")
             .attr("x", 0)
@@ -556,6 +532,7 @@ function createChart2(svg, parsedData, selectedYear) {
             .attr("dominant-baseline", "middle");
     });
 }
+
 
 
 /* The FileReader API reads the selected CSV file and triggers the onloadend event.
@@ -637,7 +614,7 @@ svg.append("text")
 
 
 
-    function createChart4(svg, data) {
+function createChart4(svg, data) {
         console.log('we are in chart4', data);
       
     
