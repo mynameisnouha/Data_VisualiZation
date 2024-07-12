@@ -82,107 +82,91 @@
             </div>
         </section>
 
-        <!-- Tab 3: Dashboard -->
         <section id="Dashboard" class="tabcontent">
             <h1>Dashboard Example</h1>
-            <div class="dashboardGrid">
+        
+            <!-- Counter and Labels Row -->
+            <div class="counter-labels-row">
                 <!-- Counter Card -->
-                <div class="container">
-                    <div class="card">
-                        <h2>Total Counters</h2>
-                        <div class="chart-container">
-                            <svg id="counter" width="300" height="150"></svg>
-                        </div>
-                    </div>
+                <div class="counter">
+                    <svg id="counter"></svg>
                 </div>
-        
-                <!-- Summary Statistics Card -->
-                <div class="container">
-                    <div class="card">
-                        <h2>Summary Statistics</h2>
-                        <div class="chart-container" id="summary-stats">
-                            <!-- Summary stats content will be dynamically added here -->
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Filter Options Card -->
-                <div class="container">
-                    <div class="card">
-                        <h2>Filter Options</h2>
-                        <div class="filters">
-                            <!-- Add filter options here -->
-                            <div class="filter-item">
-                                <label for="region">Select Region:</label>
-                                <select id="region" class="styled-select">
-                                    <!-- Options will be dynamically added -->
-                                </select>
-                            </div>
-                            <div class="filter-item">
-                                <label for="user-type">Select User Type:</label>
-                                <select id="user-type" class="styled-select">
-                                    <!-- Options will be dynamically added -->
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Labels Cards -->
+                <div id="stats-container" class="stats-container">
+                    <!-- Cards will be added dynamically here -->
                 </div>
             </div>
-            <div class="dashboardGrid">
-                <div class="container">
-                    <div class="card">
-                        <h2 class="chart-header">Monthly KWH Usage Analysis</h2>
-                        <p class="chart-description">This chart represents the density plot of KWH usage for the selected month and year, highlighting the peaks in usage.</p>
-                        <div class="filters">
-                            <div class="filter-item">
-                                <label for="year">Select Year:</label>
-                                <select id="year" class="styled-select">
-                                    <!-- Options here -->
-                                </select>
-                            </div>
-                            <div class="filter-item">
-                                <label for="month">Select Month:</label>
-                                <select id="month" class="styled-select">
-                                    <!-- Options here -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="chart-container">
-                            <svg id="chart1" width="600" height="400"></svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="container">
-                    <div class="card">
-                        <h2>Chart 2</h2>
-                        <h4>Data representation 2.</h4>
-                        <div class="chart-container">
-                            <svg id="chart2" width="600" height="400"></svg>
-                        </div>
-                    </div>
-                </div>
         
-                <div class="container">
-                    <div class="card">
-                        <h2 class="chart-header">PCA Analysis of KWH Usage Data</h2>
-                        <p class="chart-description">This scatter plot visualizes the KWH usage data reduced to two dimensions using Principal Component Analysis (PCA). </p>
-                        <div class="chart-container">
-                            <svg id="chart3" width="600" height="400"></svg>
+            <!-- Filter Options Card -->
+            <div class="filter">
+                <h2>Filter Options</h2>
+                <div id="filter-status">
+                    <label for="label">Select Label:</label>
+                    <select id="label" class="styled-select">
+                        <!-- Options will be dynamically added -->
+                    </select>
+                </div>
+            </div>
+            <br>
+            <br>
+        
+            <div class="dashboardGrid">
+                <div class="card">
+                    <h2 class="chart-header">Monthly Energy Consumption Analysis</h2>
+                    <p class="chart-description">This chart represents the density plot of KWH usage for the selected month and year, highlighting the peaks in usage.</p>
+                    <div class="filters">
+                        <div class="slider-container">
+                            <label for="bandwidthSlider">Adjust Bandwidth:</label>
+                            <input type="range" id="bandwidthSlider" min="0.01" max="0.6" step="0.05" value="7">
+                            <span id="bandwidthValue">0.1</span>
                         </div>
+                        
+                        <div class="filter-item">
+                            <label for="year">Select Year:</label>
+                            <select id="year" class="styled-select">
+                                <!-- Options here -->
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label for="month">Select Month:</label>
+                            <select id="month" class="styled-select">
+                                <!-- Options here -->
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="chart-container">
+                        <svg id="chart1"></svg>
                     </div>
                 </div>
-                
-                <div class="container">
-                    <div class="card">
-                        <h2>Chart 4</h4>
-                        <div class="chart-container">
-                            <svg id="chart4" width="600" height="400"></svg>
-                        </div>
+                <div class="card">
+                    <h2 class="chart-header">Monthly Energy Consumption Trends</h2>
+                    <p class="chart-description">This chart represents the density plot of KWH usage for the selected month and year, highlighting the peaks in usage.</p>
+                    <div class="chart-container">
+                        <svg id="chart2"></svg>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="chart-header">Principal Component Analysis of Energy Data</h2>
+                    <p class="chart-description">This scatter plot visualizes the Energy Consumption data reduced to two dimensions using Principal Component Analysis (PCA).</p>
+                    <div class="chart-container">
+                        <svg id="chart3"></svg>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2 class="chart-header">Energy Consumption Boxplot</h2>
+    <p class="chart-description">This boxplot illustrates the distribution and variability of energy consumption (in KWH) across different Clusters, highlighting the median, quartiles, and potential outliers.</p>
+                    <div class="chart-container">
+                        <svg id="chart4"></svg>
                     </div>
                 </div>
             </div>
         </section>
+        
+
+        
+        
+        
     </main>
 </body>
 

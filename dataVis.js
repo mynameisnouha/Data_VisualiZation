@@ -9,7 +9,7 @@ function init() {
     margin = { top: 10, right: 50, bottom: 50, left: 50 }; // Increased right margin
     width = 700; // Increased width
     height = 700; // Increased height
-    radius = Math.min(width, height) / 2 - 200; // Reduced radius to add more padding
+    radius = Math.min(width, height) / 2 - 150; // Reduced radius to add more padding
     
 
     dataTable1 = d3.select('#dataTable1');
@@ -411,7 +411,7 @@ function renderScatterplot() {
         .on("mouseover", function(event, d) {
             d3.select(this).style("stroke", "black").style("stroke-width", 1.5);
             tooltip.transition()
-                .duration(200)
+                .duration(1000)
                 .style("opacity", .9);
             tooltip.html(`${xAttribute}: ${d[xAttribute]}<br>${yAttribute}: ${d[yAttribute]}<br>${sizeAttribute}: ${d[sizeAttribute]}`)
                 .style("left", (event.pageX + 5) + "px")
@@ -420,7 +420,7 @@ function renderScatterplot() {
         .on("mouseout", function(d) {
             d3.select(this).style("stroke", null);
             tooltip.transition()
-                .duration(500)
+                .duration(1000)
                 .style("opacity", 0);
         })
         .on("click", function(event, d) {

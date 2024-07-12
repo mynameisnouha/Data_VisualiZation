@@ -1,53 +1,75 @@
 /* General Body Styles */
+/* General Body Styles */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8; /* Very light blue */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
     color: #333;
+    height: 100vh; /* Ensure the body takes full height */
+    display: flex;
+    flex-direction: column;
 }
+
+
+
 
 /* Header Styles */
 header {
-    background-color: #a0c4ff; /* Pastel blue */
-    color: #333;
-    padding: 1rem;
+    background-color: #3f51b5;
+    color: #fff;
+    padding: 1.5rem;
     text-align: center;
     width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Credits Section */
 #credits {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding-bottom: 1rem;
 }
 
 /* Instructions Styles */
 .instructions {
-    color: #7db9ff; /* Light blue */
+    color: #c5cae9;
 }
 
 /* Navigation Bar */
 nav {
     display: flex;
     justify-content: center;
-    background-color: #d0e6ff; /* Very light blue */
+    background-color: #3f51b5;
     width: 100%;
+    padding: 0.5rem 0;
 }
 
 /* Main Content Area */
 main {
-    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
     width: 100%;
+    overflow: auto; /* Allow scrolling if content overflows */
 }
+
+
 
 /* Tab Content Styles */
 .tabcontent {
+    flex: 1;
     display: none;
-    padding: 1rem;
-    background-color: #ffffff; /* White */
+    padding: 2rem;
+    background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin: 1rem 0;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabcontent.active {
+    display: flex;
 }
 
 /* File Upload Styles */
@@ -62,13 +84,13 @@ main {
 /* File Label Styles */
 .file-label {
     font-weight: bold;
-    color: #a0c4ff; /* Pastel blue */
+    color: #3f51b5;
 }
 
 /* File Input Styles */
 .file-input {
     padding: 0.5rem;
-    border: 1px solid #b0bec5; /* Light grey-blue */
+    border: 1px solid #b0bec5;
     border-radius: 4px;
     max-width: 100%;
 }
@@ -78,7 +100,7 @@ main {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
-    overflow-x: auto; /* Horizontal scrollbar */
+    overflow-x: auto;
 }
 
 /* Table Wrapper Styles */
@@ -87,15 +109,15 @@ main {
     flex: 1;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 8px;
-    overflow-x: auto; /* Horizontal scrollbar */
-    background-color: #ffffff; /* White */
+    overflow-x: auto;
+    background-color: #ffffff;
     padding: 10px;
 }
 
 /* Table Info Styles */
 .table-info {
     font-size: 0.9rem;
-    color: #666; /* Grey text for row count */
+    color: #666;
     text-align: left;
     margin-bottom: 10px;
 }
@@ -104,30 +126,30 @@ main {
 .data-table {
     border-collapse: collapse;
     width: 100%;
-    table-layout: fixed; /* Fix table layout for horizontal scrolling */
+    table-layout: fixed;
 }
 
 /* Table Header Styles */
 .data-table th, .data-table td {
-    border: 1px solid #b0bec5; /* Light grey-blue */
+    border: 1px solid #b0bec5;
     padding: 8px;
     text-align: left;
 }
 
 /* Header Cell Styles */
 .data-table th {
-    background-color: #d0e6ff; /* Very light blue */
-    color: #333;
+    background-color: #3f51b5;
+    color: #fff;
 }
 
 /* Table Cell Styles */
 .data-table td {
-    background-color: #ffffff; /* White */
+    background-color: #ffffff;
 }
 
 /* Hover Effect for Single Table Cell */
 .data-table td:hover {
-    background-color: #e0e8f9; /* Very light blue */
+    background-color: #e0e8f9;
 }
 
 /* Pagination Styles */
@@ -140,23 +162,23 @@ main {
 
 /* Pagination Button Styles */
 .pageButtonClass, .pageButtonClass:disabled {
-    border: 1px solid #b0bec5; /* Light grey-blue */
+    border: 1px solid #b0bec5;
     padding: 0.5rem 1rem;
     margin: 0 0.25rem;
     text-decoration: none;
     color: #333;
     cursor: pointer;
-    background-color: #ffffff; /* White */
+    background-color: #ffffff;
 }
 
 /* Hover Effect for Pagination Buttons */
 .pageButtonClass:hover:not(.active) {
-    background-color: #e0e8f9; /* Very light blue */
+    background-color: #e0e8f9;
 }
 
 /* Active Pagination Button Styles */
 .pageButtonClass.active {
-    background-color: #a0c4ff; /* Pastel blue */
+    background-color: #3f51b5;
     color: #fff;
 }
 
@@ -173,22 +195,6 @@ main {
     gap: 1rem;
 }
 
-/* Container Styles */
-.container {
-    flex: 1;
-    padding: 1rem;
-    background-color: #ffffff; /* White */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    overflow: hidden; /* Ensure contents don't overflow */
-}
-
-/* Dashboard Grid Styles */
-.dashboardGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
 
 /* Axis Styles */
 .axis line,
@@ -213,7 +219,7 @@ button, input, select, textarea {
 #menu {
     display: flex;
     justify-content: space-between;
-    background-color: #a0c4ff; /* Pastel blue */
+    background-color: #3f51b5;
     color: #333;
     border-radius: 8px;
     margin-bottom: 1rem;
@@ -223,15 +229,15 @@ button, input, select, textarea {
 /* Row Count Display Styles */
 .row-count {
     font-size: 0.9rem;
-    color: #666; /* Grey text for row count */
+    color: #666;
     text-align: center;
     margin-top: 0.5rem;
 }
 
 /* Scatterplot Styles */
 #scatterplot-container {
-    padding: 20px;
-    background-color: #ffffff; /* White */
+    padding: 10px;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
@@ -254,8 +260,8 @@ button, input, select, textarea {
     border-radius: 3px;
     pointer-events: none;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
-    font-size: 0.9rem; /* Adjusted font size */
-    color: #333; /* Ensure readability */
+    font-size: 0.9rem;
+    color: #333;
 }
 
 .radar-grid {
@@ -275,14 +281,7 @@ button, input, select, textarea {
     color: #333;
 }
 
-/* Updated styles for scatterplot container */
-#scatterplot-container {
-    padding: 20px;
-    background-color: #ffffff; /* White */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
+
 
 /* Updated scatterplot styles */
 #sp {
@@ -314,20 +313,20 @@ button {
     padding: 10px 20px;
     border-radius: 4px;
     border: none;
-    background-color: #a0c4ff; /* Pastel blue */
+    background-color: #3f51b5;
     color: #fff;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #7db9ff; /* Light blue */
+    background-color: #303f9f;
 }
 
 /* General improvement for tab navigation */
 .tablink {
-    background-color: #d0e6ff; /* Very light blue */
-    color: #333;
-    border: 1px solid #a0c4ff; /* Pastel blue */
+    background-color: #3f51b5;
+    color: #fff;
+    border: 1px solid #3f51b5;
     outline: none;
     cursor: pointer;
     padding: 1rem;
@@ -335,43 +334,30 @@ button:hover {
     flex: 1;
     text-align: center;
     transition: background-color 0.3s, border-color 0.3s;
+    border-radius: 4px;
+    margin: 0 5px;
 }
 
 .tablink:hover {
-    background-color: #a0c4ff; /* Pastel blue */
-    border-color: #7db9ff; /* Light blue */
-}
-
-#scatterplot-container {
-    padding: 20px;
-    background-color: #ffffff; /* White */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    overflow: visible; /* Ensure overflow is visible for axis labels */
-}
-
-#sp {
-    width: 100%;
-    height: 650px;  /* Increased height */
-    margin-bottom: 50px; /* Ensure enough space for x-axis label */
+    background-color: #303f9f;
+    border-color: #3f51b5;
 }
 
 /* Radar Chart Styles */
 #radar-container {
     padding: 20px;
-    background-color: #ffffff; /* White */
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin-bottom: 20px;
-    overflow: visible; /* Ensure overflow is visible for axis labels */
+    overflow: visible;
 }
 
 .radar-label {
     font-size: 10px;
     fill: #333;
     text-anchor: middle;
-    transform: translateY(-10px); /* Adjust position */
+    transform: translateY(-10px);
 }
 
 /* Legend Item Styles */
@@ -407,34 +393,6 @@ button:hover {
     color: #333;
 }
 
-svg {
-    font-family: Arial, sans-serif;
-}
-
-/* Additional styling for cards */
-.card {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    margin: 0.5rem;
-    width: 100%;
-}
-
-
-.chart-container {
-    width: 60%; /* Set the width of the container to 60% */
-    height: auto; /* Maintain aspect ratio */
-    position: relative; /* For positioning of the SVG */
-    margin: 0 auto; /* Center the container */
-}
-
-.chart-container svg {
-    width: 100%; /* SVG will take 100% of the container's width */
-    height: auto; /* Maintain aspect ratio */
-}
-
-
 
 
 /* Chart Header */
@@ -447,7 +405,7 @@ svg {
 
 /* Chart Description */
 .chart-description {
-    color: #7db9ff; /* Light blue */
+    color: #3f51b5;
     text-align: center;
     margin-bottom: 1rem;
 }
@@ -467,15 +425,14 @@ svg {
     align-items: center;
 }
 
-/* Add custom arrow to the dropdown */
 /* Filter Dropdown Styles */
 .styled-select {
     padding: 0.5rem 1rem;
-    border: 2px solid #007bff;
+    border: 2px solid #3f51b5;
     border-radius: 8px;
     background-color: #fff;
     font-size: 1rem;
-    color: #007bff;
+    color: #3f51b5;
     width: 150px;
     text-align: center;
     -webkit-appearance: none;
@@ -489,63 +446,144 @@ svg {
 }
 
 .styled-select:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #303f9f;
+    box-shadow: 0 0 5px rgba(63, 81, 181, 0.5);
     outline: none;
 }
 
 .styled-select:hover {
-    border-color: #0056b3;
+    border-color: #303f9f;
+}
+/* Adjust the dashboard grid to have specific columns and rows */
+.dashboardGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    grid-template-rows: auto auto; /* Two rows */
+    gap: 2rem; /* Space between the grid items both horizontally and vertically */
 }
 
-.filters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+.small-container {
+    width: 20%;
+    padding: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
 }
 
-.filter-item {
+.container {
+    flex: 1;
+    padding: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+
+
+.filter {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.3s ease-in-out;
+    min-height: 100px;
+    gap: 2rem
 }
 
-/* Axis Label Styles */
-.axis-label {
-    font-size: 14px;
-    fill: #333;
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Tooltip Styles */
-.tooltip {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 3px;
-    pointer-events: none;
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+.chart-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 0;
+    padding:0;
+    overflow: visible;
 }
 
-/* Legend Styles */
-.legend {
-    font-size: 1rem;
-    color: #333;
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+.chart-container svg {
+    width: 100%;
+    height: 100%;
+    display: block; /* Ensuring block display */
+}
+
+
+/* Style for the table */
+#stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#stats-table th, #stats-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#stats-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+    font-weight: bold;
+}
+
+#stats-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#stats-table tr:hover {
+    background-color: #ddd;
+}
+
+#stats-table th, #stats-table td {
     text-align: center;
-    margin-top: 1rem;
 }
-
-.legend-item {
+.counter-labels-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-.legend-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
+.counter {
+    flex: 1;
+    padding: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.stats-container {
+    display: flex;
+    flex: 4;
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    transition: box-shadow 0.3s ease-in-out;
+    min-height: 600px; /* Ensure enough height */
+    min-width: 300px; /* Ensure minimum width */
+    
 }
