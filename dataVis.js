@@ -1,3 +1,17 @@
+/*
+* Data Visualization - Framework
+* Copyright (C) University of Passau
+*   Faculty of Computer Science and Mathematics
+*   Chair of Cognitive sensor systems
+* Maintenance:
+*   2024, Alexander Gall <alexander.gall@uni-passau.de>
+*
+* All rights reserved.
+*/ 
+/* In this project we are going to use two datasets:
+*df1_10: A sample of downsampled energy consumption data
+*df_clustered: A summerized dataset after applying a clustering algorithm
+*/
 let xAxis, yAxis, xAxisLabel, yAxisLabel, data, x, y;
 let channels = ["scatterX", "scatterY", "size"];
 let selectedPoints = new Map();
